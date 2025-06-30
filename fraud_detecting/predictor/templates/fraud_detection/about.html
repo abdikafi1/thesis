@@ -1,0 +1,57 @@
+{% extends 'fraud_detection/base.html' %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="modern-about">
+    <h1>About This Project</h1>
+    <p class="about-desc">
+        <strong>Insurance Fraud Detection</strong> is a modern web application that helps insurance companies and analysts detect potential fraudulent claims using advanced machine learning models. Enter claim details, get instant fraud risk predictions, and analyze your prediction history and statistics.
+    </p>
+    <h2>Features</h2>
+    <ul class="about-features">
+        <li>Easy-to-use fraud prediction form</li>
+        <li>Personalized prediction history</li>
+        <li>Analytics dashboard for insights</li>
+        <li>Secure authentication system</li>
+        <li>Modern, responsive UI</li>
+    </ul>
+    <h2>About the Author</h2>
+    <p class="about-author">This project was developed as part of a thesis to demonstrate the application of machine learning in real-world fraud detection scenarios.</p>
+</div>
+{% endblock %}
+{% block extra_head %}
+<style>
+.modern-about {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(107,71,237,0.07);
+    padding: 40px 32px 32px 32px;
+}
+.modern-about h1 {
+    color: #6b47ed;
+    font-size: 2em;
+    margin-bottom: 18px;
+}
+.modern-about h2 {
+    color: #4e2bbd;
+    font-size: 1.2em;
+    margin-top: 32px;
+    margin-bottom: 10px;
+}
+.about-desc, .about-author {
+    color: #444;
+    font-size: 1.1em;
+    margin-bottom: 18px;
+}
+.about-features {
+    color: #444;
+    margin-top: 12px;
+    margin-bottom: 18px;
+    padding-left: 18px;
+}
+.about-features li {
+    margin-bottom: 6px;
+}
+</style>
+{% endblock %} 

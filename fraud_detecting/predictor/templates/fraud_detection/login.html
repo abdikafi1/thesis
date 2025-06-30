@@ -1,0 +1,146 @@
+{% extends 'fraud_detection/auth_base.html' %}
+{% block title %}Sign In{% endblock %}
+{% block extra_head %}
+<style>
+    body {
+        background: #fafafa;
+    }
+    .login-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .login-form {
+        width: 320px;
+        background: white;
+        padding: 32px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-header {
+        margin-bottom: 24px;
+    }
+    .form-header h1 {
+        font-size: 20px;
+        color: #333;
+        margin: 0;
+        font-weight: 600;
+    }
+    .input-group {
+        margin-bottom: 16px;
+    }
+    .input-field {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    .input-field:focus {
+        border-color: #6b47ed;
+    }
+    .input-field::placeholder {
+        color: #999;
+    }
+    .login-btn {
+        width: 100%;
+        padding: 10px;
+        background: #6b47ed;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .login-btn:hover {
+        background: #5a3dd3;
+    }
+    .error-msg {
+        color: #e53935;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    .links {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #666;
+    }
+    .links a {
+        color: #6b47ed;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .links a:hover {
+        color: #5a3dd3;
+    }
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+    .checkbox-group input[type="checkbox"] {
+        margin-right: 8px;
+    }
+    .checkbox-group label {
+        font-size: 13px;
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-form">
+        <div class="form-header">
+            <h1>Sign In</h1>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            
+            <div class="input-group">
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error-msg">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="input-group">
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error-msg">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="error-msg">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="login-btn">Sign In</button>
+            
+            <div class="links">
+                <span>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></span>
+                <br>
+                <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

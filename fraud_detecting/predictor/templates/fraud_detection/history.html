@@ -1,0 +1,163 @@
+{% extends 'fraud_detection/base.html' %}
+{% load static %}
+{% load get_item %}
+{% block title %}My Prediction History{% endblock %}
+{% block content %}
+<div class="modern-dashboard" style="max-width: 900px; margin: 40px auto;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+        <h1 style="color: #6b47ed; margin: 0;">My Prediction History</h1>
+        <a href="{% url 'dashboard' %}" class="modern-btn" style="font-size: 0.97em; padding: 8px 18px; margin: 0;">Back to Dashboard</a>
+    </div>
+    <form method="get" class="filter-form" style="margin-bottom: 18px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <label for="result">Result:</label>
+        <select name="result" id="result">
+            <option value="">All</option>
+            <option value="Fraud" {% if result_filter == 'Fraud' %}selected{% endif %}>Fraud</option>
+            <option value="Not Fraud" {% if result_filter == 'Not Fraud' %}selected{% endif %}>Not Fraud</option>
+        </select>
+        <label for="search">Note:</label>
+        <input type="text" name="search" id="search" value="{{ search_query }}" placeholder="Search notes..." style="width: 180px;">
+        <button type="submit" class="modern-btn">Filter</button>
+        {% if result_filter or search_query %}
+            <a href="{% url 'history' %}" class="modern-btn" style="background:#eee;color:#6b47ed;">Reset</a>
+        {% endif %}
+    </form>
+    {% if predictions %}
+        <div class="modern-history-grid">
+            {% for p in predictions %}
+            <div class="modern-history-card">
+                <div class="modern-history-header">
+                    <span class="modern-history-date">{{ p.created_at|date:"Y-m-d H:i" }}</span>
+                    <span class="modern-history-result {% if p.result == 'Fraud' %}fraud{% else %}not-fraud{% endif %}">{{ p.result }}</span>
+                    <span class="modern-history-prob">{{ p.probability }}</span>
+                </div>
+                <div class="modern-history-inputs">
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        {% for key, value in p.input_data.items %}
+                            <li><strong>{{ user_labels|get_item:key|default:key }}:</strong> {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modern-history-note">
+                    <form method="post" action="{% url 'edit_note' p.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="text" name="note" value="{{ p.note }}" maxlength="255" style="width: 120px;">
+                        <button type="submit" class="modern-btn" style="padding: 6px 14px; font-size: 0.95em;">Save</button>
+                    </form>
+                </div>
+                <div class="modern-history-actions">
+                    <form method="post" action="{% url 'delete_prediction' p.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="modern-btn" style="background:#e53935; color:#fff; padding: 6px 14px; font-size: 0.95em;" onclick="return confirm('Are you sure you want to delete this prediction?');">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="pagination" style="text-align:center;margin-top:24px;">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if result_filter %}result={{ result_filter }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.previous_page_number }}" class="modern-btn">&laquo; Previous</a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="modern-btn" style="background:#6b47ed;color:#fff;">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?{% if result_filter %}result={{ result_filter }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ num }}" class="modern-btn" style="background:#eee;color:#6b47ed;">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?{% if result_filter %}result={{ result_filter }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.next_page_number }}" class="modern-btn">Next &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p style="text-align:center; color:#888;">You have no prediction history yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+{% block extra_head %}
+<style>
+.modern-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+}
+.modern-history-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #e0e0e0;
+    padding: 24px 20px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #ececec;
+}
+.modern-history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.modern-history-date {
+    color: #888;
+    font-size: 0.98em;
+}
+.modern-history-result {
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 1em;
+}
+.modern-history-result.fraud {
+    background: #ffeaea;
+    color: #e53935;
+}
+.modern-history-result.not-fraud {
+    background: #eaf7ff;
+    color: #2691d9;
+}
+.modern-history-prob {
+    color: #6b47ed;
+    font-weight: 500;
+    font-size: 1em;
+}
+.modern-history-inputs {
+    margin-bottom: 6px;
+}
+.modern-history-note {
+    margin-bottom: 6px;
+}
+.modern-history-actions {
+    margin-bottom: 0;
+}
+@media (max-width: 700px) {
+    .modern-dashboard {
+        padding: 0 6px;
+    }
+    .modern-history-grid {
+        gap: 12px;
+    }
+    .modern-history-card {
+        padding: 14px 6px 10px 6px;
+    }
+}
+</style>
+{% endblock %}
+{% comment %}
+Add this to your view context:
+user_labels = {
+    'PolicyType': 'Policy Type',
+    'VehiclePrice': 'Vehicle Price',
+    'AgeOfVehicle': 'Age of Vehicle',
+    'PastNumberOfClaims': 'Past Number of Claims',
+    'Days_Policy_Accident': 'Days Policy to Accident',
+    'PoliceReportFiled': 'Police Report Filed',
+    'WitnessPresent': 'Witness Present',
+    'NumberOfSuppliments': 'Number of Supplements',
+    'AddressChange_Claim': 'Address Change at Claim'
+}
+And add a custom template filter get_item if needed.
+{% endcomment %} 

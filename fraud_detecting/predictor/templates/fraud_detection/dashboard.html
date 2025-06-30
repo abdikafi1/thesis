@@ -1,0 +1,62 @@
+{% extends 'fraud_detection/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="modern-dashboard">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+        <h1 style="color: #6b47ed; margin: 0;">Dashboard</h1>
+        <button class="modern-btn" onclick="document.getElementById('fieldInfoModal').style.display='block'" style="font-size: 0.97em; padding: 8px 18px; margin: 0;">Field Info</button>
+    </div>
+    <div class="modern-card-grid">
+        <a href="{% url 'predict' %}" class="modern-card">
+            <div class="modern-card-icon"><i class="fas fa-search"></i></div>
+            <div class="modern-card-title">Prediction</div>
+            <div class="modern-card-desc">Analyze claim fraud risk</div>
+        </a>
+        <a href="{% url 'history' %}" class="modern-card">
+            <div class="modern-card-icon"><i class="fas fa-history"></i></div>
+            <div class="modern-card-title">History</div>
+            <div class="modern-card-desc">Your past predictions</div>
+        </a>
+        <a href="{% url 'analytics' %}" class="modern-card">
+            <div class="modern-card-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="modern-card-title">Analytics</div>
+            <div class="modern-card-desc">Fraud detection stats</div>
+        </a>
+        <a href="{% url 'ead' %}" class="modern-card">
+            <div class="modern-card-icon"><i class="fas fa-calculator"></i></div>
+            <div class="modern-card-title">EAD Analysis</div>
+            <div class="modern-card-desc">Exposure at Default</div>
+        </a>
+    </div>
+</div>
+<!-- Field Info Modal -->
+<div id="fieldInfoModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; max-width:480px; margin:60px auto; border-radius:12px; box-shadow:0 4px 32px #b0c4de; padding:32px 24px; position:relative;">
+        <button onclick="document.getElementById('fieldInfoModal').style.display='none'" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:1.5em; color:#888; cursor:pointer;">&times;</button>
+        <h2 style="color:#6b47ed; margin-bottom:18px;">Field Info</h2>
+        <table style="width:100%; font-size:0.98em;">
+            <thead>
+                <tr style="color:#6b47ed;">
+                    <th style="text-align:left; padding-bottom:6px;">Field</th>
+                    <th style="text-align:left; padding-bottom:6px;">Type</th>
+                    <th style="text-align:left; padding-bottom:6px;">Example/Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Policy Type</td><td>Dropdown</td><td>Private, Commercial, ...</td></tr>
+                <tr><td>Vehicle Price</td><td>Dropdown</td><td>less than 20000, 20000 to 29000, ...</td></tr>
+                <tr><td>Age of Vehicle</td><td>Number</td><td>e.g. 5</td></tr>
+                <tr><td>Past Number of Claims</td><td>Number</td><td>e.g. 2</td></tr>
+                <tr><td>Days Policy to Accident</td><td>Number</td><td>e.g. 120</td></tr>
+                <tr><td>Police Report Filed</td><td>Dropdown</td><td>Yes, No</td></tr>
+                <tr><td>Witness Present</td><td>Dropdown</td><td>Yes, No</td></tr>
+                <tr><td>Number of Supplements</td><td>Number</td><td>e.g. 1</td></tr>
+                <tr><td>Address Change at Claim</td><td>Dropdown</td><td>no change, under 6 months, ...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+{% endblock %} 

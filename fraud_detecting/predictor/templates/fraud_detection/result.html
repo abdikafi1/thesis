@@ -1,0 +1,24 @@
+{% extends 'fraud_detection/base.html' %}
+{% load get_item %}
+{% block title %}Prediction Result{% endblock %}
+{% block content %}
+<div class="modern-dashboard" style="max-width: 500px; margin: 40px auto;">
+    <h1 style="color: #6b47ed; text-align: center;">Prediction Result</h1>
+    <div class="result-card" style="margin-top: 24px;">
+        <h2 style="color: #333;">Result: <span style="color: {% if result == 'Fraud' %}#e53935{% else %}#43a047{% endif %};">{{ result }}</span></h2>
+        <p style="font-size: 1.1em; color: #444;">Probability: <strong>{{ probability }}</strong></p>
+        <h3 style="margin-top: 28px; color: #6b47ed;">Input Details</h3>
+        <ul style="list-style: none; padding: 0;">
+            {% for key, value in input.items %}
+                <li style="margin-bottom: 8px;">
+                    <strong>{{ user_labels|get_item:key|default:key }}:</strong> {{ value }}
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'dashboard' %}" class="modern-btn" style="margin-top: 18px; display: inline-block;">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+{% endblock %} 

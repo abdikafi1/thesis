@@ -1,0 +1,140 @@
+{% extends 'fraud_detection/auth_base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block extra_head %}
+<style>
+    body {
+        background: #fafafa;
+    }
+    .signup-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .signup-form {
+        width: 320px;
+        background: white;
+        padding: 32px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-header {
+        margin-bottom: 24px;
+    }
+    .form-header h1 {
+        font-size: 20px;
+        color: #333;
+        margin: 0;
+        font-weight: 600;
+    }
+    .input-group {
+        margin-bottom: 16px;
+    }
+    .input-field {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    .input-field:focus {
+        border-color: #6b47ed;
+    }
+    .input-field::placeholder {
+        color: #999;
+    }
+    .signup-btn {
+        width: 100%;
+        padding: 10px;
+        background: #6b47ed;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .signup-btn:hover {
+        background: #5a3dd3;
+    }
+    .error-msg {
+        color: #e53935;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    .links {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #666;
+    }
+    .links a {
+        color: #6b47ed;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .links a:hover {
+        color: #5a3dd3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="signup-form">
+        <div class="form-header">
+            <h1>Sign Up</h1>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error-msg">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="input-group">
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error-msg">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="input-group">
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="error-msg">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="input-group">
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="error-msg">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="error-msg">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+
+            <button type="submit" class="signup-btn">Sign Up</button>
+            
+            <div class="links">
+                <span>Already have an account? <a href="{% url 'login' %}">Sign In</a></span>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

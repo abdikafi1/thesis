@@ -1,0 +1,19 @@
+{% extends 'fraud_detection/base.html' %}
+{% load static %}
+{% block title %}EAD Option | Insurance Fraud Detection{% endblock %}
+{% block content %}
+    <div class="unique-header" style="background:#fffbe6;padding:24px 0 12px 0;text-align:center;border-radius:12px;margin-bottom:24px;">
+        <span class="hero-icon"><i class="fas fa-lightbulb" style="color:#ffc107;"></i></span>
+        <h1 style="color:#b8860b;">EAD Option</h1>
+        <p style="color:#444;">This page is reserved for the EAD functionality. You can implement your custom logic here.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-note" style="margin-top:12px;"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+    <div class="container" style="text-align:center;">
+        <div style="margin-top:32px;">
+            <em>Placeholder for EAD backend and UI integration.</em>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+{% endblock %} 

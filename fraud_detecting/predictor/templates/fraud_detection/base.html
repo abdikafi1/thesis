@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Insurance Fraud Detection{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'fraud_detection/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="modern-navbar">
+        <div class="modern-navbar-inner">
+            <a href="/" class="modern-logo">FraudDetect</a>
+            <div class="modern-nav-links">
+                <a href="/about/" class="modern-nav-link">About</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="modern-nav-link">Dashboard</a>
+                    <a href="{% url 'history' %}" class="modern-nav-link">History</a>
+                    <a href="{% url 'analytics' %}" class="modern-nav-link">Analytics</a>
+                    <a href="{% url 'logout' %}" class="modern-nav-link">Logout</a>
+                    <span class="modern-user-avatar">{{ user.username|first|upper }}</span>
+                {% else %}
+                    <a href="{% url 'login' %}" class="modern-nav-link">Login</a>
+                    <a href="{% url 'signup' %}" class="modern-nav-link">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <main class="modern-main">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="modern-footer">
+        <div class="modern-footer-inner">
+            <span>&copy; 2024 Insurance Fraud Detection App</span>
+        </div>
+    </footer>
+</body>
+</html> 
