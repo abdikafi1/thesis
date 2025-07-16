@@ -3,44 +3,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Insurance Fraud Detection{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'fraud_detection/style.css' %}">
-    {% block extra_head %}{% endblock %}
+    <title>{% block title %}FraudDetect{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'fraud_detection/style.css' %}">
 </head>
 <body>
-    <nav class="modern-navbar">
-        <div class="modern-navbar-inner">
-            <a href="/" class="modern-logo">FraudDetect</a>
-            <div class="modern-nav-links">
-                <a href="/about/" class="modern-nav-link">About</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'dashboard' %}" class="modern-nav-link">Dashboard</a>
-                    <a href="{% url 'history' %}" class="modern-nav-link">History</a>
-                    <a href="{% url 'analytics' %}" class="modern-nav-link">Analytics</a>
-                    <a href="{% url 'logout' %}" class="modern-nav-link">Logout</a>
-                    <span class="modern-user-avatar">{{ user.username|first|upper }}</span>
-                {% else %}
-                    <a href="{% url 'login' %}" class="modern-nav-link">Login</a>
-                    <a href="{% url 'signup' %}" class="modern-nav-link">Sign Up</a>
-                {% endif %}
-            </div>
+    <nav class="navbar">
+        <a class="nav-brand" href="/">FraudDetect</a>
+        <div class="nav-links">
+            <a class="nav-link" href="/dashboard/">Dashboard</a>
+            <a class="nav-link" href="/history/">History</a>
+            <a class="nav-link" href="/analytics/">Analytics</a>
+            <a class="nav-link" href="/about/">About</a>
+            {% if user.is_authenticated %}
+                <span class="nav-user">{{ user.username }}</span>
+                <a class="nav-link" href="/logout/">Logout</a>
+            {% else %}
+                <a class="nav-link" href="/login/">Login</a>
+                <a class="nav-link" href="/signup/">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
-    <main class="modern-main">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    <div class="container">
         {% block content %}{% endblock %}
-    </main>
-    <footer class="modern-footer">
-        <div class="modern-footer-inner">
-            <span>&copy; 2024 Insurance Fraud Detection App</span>
-        </div>
+    </div>
+    <footer class="footer">
+        &copy; 2024 Insurance Fraud Detection App
     </footer>
 </body>
 </html> 
