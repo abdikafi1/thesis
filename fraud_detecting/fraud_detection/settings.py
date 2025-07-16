@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-brpbvok-$#8-4c12gb#w$9mby9xj3ma#x+s!cbl6b3d*o%0yjt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'thesis-1-z2x7.onrender.com']
 
 
 # Application definition
