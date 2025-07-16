@@ -5,22 +5,31 @@
     <meta charset="UTF-8">
     <title>{% block title %}FraudDetect{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'fraud_detection/style.css' %}">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <a class="nav-brand" href="/">FraudDetect</a>
-        <div class="nav-links">
-            <a class="nav-link" href="/dashboard/">Dashboard</a>
-            <a class="nav-link" href="/history/">History</a>
-            <a class="nav-link" href="/analytics/">Analytics</a>
-            <a class="nav-link" href="/about/">About</a>
-            {% if user.is_authenticated %}
-                <span class="nav-user">{{ user.username }}</span>
-                <a class="nav-link" href="/logout/">Logout</a>
-            {% else %}
-                <a class="nav-link" href="/login/">Login</a>
-                <a class="nav-link" href="/signup/">Sign Up</a>
-            {% endif %}
+    <nav class="bg-blue-600 shadow-md mb-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a class="text-white font-bold text-2xl tracking-wide" href="/">FraudDetect</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a class="text-white hover:text-yellow-300 transition" href="/dashboard/">Dashboard</a>
+                    <a class="text-white hover:text-yellow-300 transition" href="/history/">History</a>
+                    <a class="text-white hover:text-yellow-300 transition" href="/analytics/">Analytics</a>
+                    <a class="text-white hover:text-yellow-300 transition" href="/about/">About</a>
+                    {% if user.is_authenticated %}
+                        <span class="text-yellow-200 font-medium">{{ user.username }}</span>
+                        <a class="text-white hover:text-yellow-300 transition" href="/test/">test</a>
+                        <a class="text-white hover:text-yellow-300 transition" href="/logout/">Logout</a>
+                    {% else %}
+                        <a class="text-white hover:text-yellow-300 transition" href="/login/">Login</a>
+                        <a class="text-white hover:text-yellow-300 transition" href="/signup/">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </nav>
     <div class="container">
