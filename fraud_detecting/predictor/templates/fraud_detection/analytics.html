@@ -2,89 +2,64 @@
 {% extends 'fraud_detection/base.html' %}
 {% block title %}Admin Analytics{% endblock %}
 {% block content %}
-    <div class="unique-header" style="background:#f7fbff;padding:24px 0 12px 0;text-align:center;border-radius:12px;margin-bottom:24px;">
-        <span class="hero-icon"><i class="fas fa-chart-pie" style="color:#185a8c;"></i></span>
-        <h1 style="color:#185a8c;">Admin Analytics</h1>
-        <p style="color:#444;">View overall prediction statistics and manage recent activity.</p>
-        <a href="{% url 'dashboard' %}" class="btn btn-note" style="margin-top:12px;"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+<div class="min-h-[60vh] flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-white py-10">
+  <div class="backdrop-blur-md bg-white/80 rounded-2xl shadow-2xl p-10 w-full max-w-4xl animate-fade-in-up">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+      <h1 class="text-3xl font-extrabold text-blue-700 flex items-center gap-2"><i class="fas fa-chart-pie animate-spin"></i> Admin Analytics</h1>
+      <a href="{% url 'dashboard' %}" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg shadow hover:bg-blue-200 transition font-medium flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
-    <div class="analytics-cards">
-        <div class="analytics-card">
-            <h2>Total Predictions</h2>
-            <p>{{ total }}</p>
-        </div>
-        <div class="analytics-card">
-            <h2>Fraud Predictions</h2>
-            <p>{{ fraud_count }}</p>
-        </div>
-        <div class="analytics-card">
-            <h2>Not Fraud Predictions</h2>
-            <p>{{ not_fraud_count }}</p>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl shadow p-6 text-center">
+        <h2 class="text-lg font-semibold text-blue-700 mb-2">Total Predictions</h2>
+        <p class="text-3xl font-extrabold text-blue-600">{{ total }}</p>
+      </div>
+      <div class="bg-gradient-to-br from-red-100 to-pink-100 rounded-xl shadow p-6 text-center">
+        <h2 class="text-lg font-semibold text-red-700 mb-2">Fraud Predictions</h2>
+        <p class="text-3xl font-extrabold text-red-600">{{ fraud_count }}</p>
+      </div>
+      <div class="bg-gradient-to-br from-green-100 to-blue-100 rounded-xl shadow p-6 text-center">
+        <h2 class="text-lg font-semibold text-green-700 mb-2">Not Fraud Predictions</h2>
+        <p class="text-3xl font-extrabold text-green-600">{{ not_fraud_count }}</p>
+      </div>
     </div>
-    <h3>Fraud vs. Not Fraud Chart</h3>
-    <canvas id="fraudChart" width="400" height="180"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {{ chart_data.labels|json_script:"chart-labels" }}
-    {{ chart_data.data|json_script:"chart-data" }}
-    <script>
-        const labels = JSON.parse(document.getElementById('chart-labels').textContent);
-        const data = JSON.parse(document.getElementById('chart-data').textContent);
-        const ctx = document.getElementById('fraudChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data,
-                    backgroundColor: ['#c00', '#2691d9'],
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-    </script>
-    <h3>Top Users by Prediction Count</h3>
-    <ul>
-        {% for user in top_users %}
-            <li>{{ user.user__username|default:'(anonymous)' }}: {{ user.count }}</li>
-        {% endfor %}
-    </ul>
-    <h3>Recent Predictions</h3>
-    <form method="post">
-        {% csrf_token %}
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Date</th>
-                    <th>User</th>
-                    <th>Result</th>
-                    <th>Probability</th>
-                    <th>Input Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in recent %}
-                <tr>
-                    <td><input type="checkbox" name="delete_ids" value="{{ p.id }}"></td>
-                    <td>{{ p.created_at|date:"Y-m-d H:i" }}</td>
-                    <td>{{ p.user.username|default:'(anonymous)' }}</td>
-                    <td>{{ p.result }}</td>
-                    <td>{{ p.probability }}</td>
-                    <td>
-                        <ul>
-                        {% for key, value in p.input_data.items %}
-                            <li><strong>{{ key }}:</strong> {{ value }}</li>
-                        {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
+    <h3 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2"><i class="fas fa-chart-bar animate-bounce"></i> Fraud vs. Not Fraud Chart</h3>
+    <div class="bg-white/80 rounded-xl shadow p-6 mb-8">
+      <canvas id="fraudChart" width="400" height="180"></canvas>
+    </div>
+    <form method="post" class="mt-8">
+      {% csrf_token %}
+      <table class="w-full rounded-xl overflow-hidden shadow mb-4">
+        <thead class="bg-blue-100">
+          <tr>
+            <th class="py-2 px-4"></th>
+            <th class="py-2 px-4">Date</th>
+            <th class="py-2 px-4">User</th>
+            <th class="py-2 px-4">Result</th>
+            <th class="py-2 px-4">Probability</th>
+            <th class="py-2 px-4">Input Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in recent %}
+          <tr class="even:bg-blue-50">
+            <td class="py-2 px-4"><input type="checkbox" name="delete_ids" value="{{ p.id }}"></td>
+            <td class="py-2 px-4">{{ p.created_at|date:"Y-m-d H:i" }}</td>
+            <td class="py-2 px-4">{{ p.user.username|default:'(anonymous)' }}</td>
+            <td class="py-2 px-4">{{ p.result }}</td>
+            <td class="py-2 px-4">{{ p.probability }}</td>
+            <td class="py-2 px-4">
+              <ul>
+                {% for key, value in p.input_data.items %}
+                  <li><strong>{{ key }}:</strong> {{ value }}</li>
                 {% endfor %}
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-danger" style="margin-top: 12px;">Bulk Delete Selected</button>
+              </ul>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow transition">Bulk Delete Selected</button>
     </form>
+  </div>
+</div>
 {% endblock %} 
