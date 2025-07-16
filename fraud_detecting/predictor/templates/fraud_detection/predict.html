@@ -2,46 +2,48 @@
 {% load static %}
 {% block title %}Predict Fraud{% endblock %}
 {% block content %}
-<div class="modern-dashboard" style="max-width: 500px; margin: 40px auto;">
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-        <h1 style="color: #6b47ed; margin: 0;">Fraud Prediction</h1>
-        <button class="modern-btn" onclick="document.getElementById('fieldInfoModal').style.display='block'" style="font-size: 0.97em; padding: 8px 18px; margin: 0;">Field Info</button>
+<div class="max-w-lg mx-auto py-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-blue-700">Fraud Prediction</h1>
+        <button class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg shadow hover:bg-blue-200 transition font-medium" onclick="document.getElementById('fieldInfoModal').style.display='flex'">
+            Field Info
+        </button>
     </div>
-    <form method="post" class="modern-form">
+    <form method="post" class="space-y-4">
         {% csrf_token %}
         {% for field in form %}
-            <div class="form-group" style="margin-bottom: 18px; position: relative;">
-                <label for="{{ field.id_for_label }}" style="font-weight: 500; color: #333;">
+            <div>
+                <label for="{{ field.id_for_label }}" class="font-medium text-gray-700">
                     {{ field.label }}
                     {% if field.field.widget.input_type == 'select' %}
-                        <span title="Choose from available options" style="color:#6b47ed; margin-left:4px; cursor:help;"><i class="fas fa-caret-down"></i></span>
+                        <span title="Choose from available options" class="text-blue-500 ml-1 cursor-help"><i class="fas fa-caret-down"></i></span>
                     {% elif field.field.widget.input_type == 'number' or field.field.widget.input_type == 'text' %}
-                        <span title="Enter a number" style="color:#6b47ed; margin-left:4px; cursor:help;"><i class="fas fa-hashtag"></i></span>
+                        <span title="Enter a number" class="text-blue-500 ml-1 cursor-help"><i class="fas fa-hashtag"></i></span>
                     {% endif %}
                 </label>
                 {{ field }}
                 {% if field.help_text %}
-                    <small class="help-text" style="color: #888;">{{ field.help_text }}</small>
+                    <small class="block text-gray-400 text-xs mb-1">{{ field.help_text }}</small>
                 {% endif %}
                 {% for error in field.errors %}
-                    <div class="error" style="color: #e53935; font-size: 13px;">{{ error }}</div>
+                    <div class="text-red-500 text-xs mt-1">{{ error }}</div>
                 {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="modern-btn" style="width: 100%;">Predict</button>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-lg">Predict</button>
     </form>
 </div>
 <!-- Field Info Modal -->
-<div id="fieldInfoModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; max-width:480px; margin:60px auto; border-radius:12px; box-shadow:0 4px 32px #b0c4de; padding:32px 24px; position:relative;">
-        <button onclick="document.getElementById('fieldInfoModal').style.display='none'" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:1.5em; color:#888; cursor:pointer;">&times;</button>
-        <h2 style="color:#6b47ed; margin-bottom:18px;">Field Info</h2>
-        <table style="width:100%; font-size:0.98em;">
+<div id="fieldInfoModal" class="hidden fixed inset-0 bg-black bg-opacity-30 z-50 items-center justify-center">
+    <div class="bg-white max-w-lg w-full rounded-xl shadow-lg p-8 relative animate-fade-in">
+        <button onclick="document.getElementById('fieldInfoModal').style.display='none'" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-blue-600 transition">&times;</button>
+        <h2 class="text-blue-700 text-xl font-semibold mb-4">Field Info</h2>
+        <table class="w-full text-sm">
             <thead>
-                <tr style="color:#6b47ed;">
-                    <th style="text-align:left; padding-bottom:6px;">Field</th>
-                    <th style="text-align:left; padding-bottom:6px;">Type</th>
-                    <th style="text-align:left; padding-bottom:6px;">Example/Options</th>
+                <tr class="text-blue-600 border-b">
+                    <th class="text-left pb-2">Field</th>
+                    <th class="text-left pb-2">Type</th>
+                    <th class="text-left pb-2">Example/Options</th>
                 </tr>
             </thead>
             <tbody>
