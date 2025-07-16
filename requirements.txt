@@ -4,3 +4,4 @@ imbalanced-learn
 numpy
 pandas
 joblib 
+gunicorn 
